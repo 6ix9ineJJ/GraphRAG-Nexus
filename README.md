@@ -1,89 +1,153 @@
-# KnowledgeGraph-Q&A-and-RAG-with-TabularData
+GraphRAG Nexus
+Conversational Q&A and RAG over Tabular Data using Knowledge Graphs
 
-`KnowledgeGraph-Q&A-and-RAG-with-TabularData` is a chatbot project that utilizes <u>knowledge graph</u>, <u>GPT 3.5</u>, <u>Langchain graph agent</u>, and <u>Neo4j</u> graph database and allows users to interact (perform <u>Q&A and RAG</u>) with Tabular databases (CSV, XLSX, etc.) using natural language. This project also demonstrates an approach for cunstructing the knowledge graph from unstructured data by leveraging LLMs.
+GraphRAG Nexus is an AI-powered system that enables users to interact with tabular datasets (CSV, Excel) using natural language. The project converts structured data into a Neo4j knowledge graph and combines graph-based reasoning with Retrieval-Augmented Generation (RAG) to answer complex questions without requiring users to write database queries.
 
-## Features:
-- Chat with a graphDB created from tabular data.
-- RAG with a graphDB created from tabular data.
+The system uses LangChain graph agents and GPT-3.5 to translate user questions into Cypher queries, execute them on the graph database, and generate human-readable responses through a Gradio-based chatbot interface.
 
-**Key NOTE:** Remember to NOT use a Neo4j with WRITE privileges. Use only READ and limit the scope. Otherwise your user can manupulate the data (e.g ask your chain to delete data). So, make sure that your database connection permissions are always scoped as narrowly as possible for your chain/agent’s needs (This warning applies to both designing the chatbot and constructing the knowledge graph using LLMs).
+🎯 Project Goals
 
-**Key NOTE:** Knowledge graphs, which form the backbone of the chatbot's data structure, can be built with input from domain experts or through advanced language models like the Langchain 'LLM Graph Transformer'. 
+Make tabular data conversational and accessible
 
-**Key NOTE:** Familiarity with database query languages such as Pandas for Python, SQL, and Cypher can enhance the user's ability to ask more better questions and have a richer interaction with the graph agent.
+Enable non-technical users to query structured datasets
 
-**Key NOTE:** Keep that in mind tha LLMs are non-diterministic. Therefore, if you use LLMs for constructing the knowledge graph, you might get slightly different results on each execution.
+Combine knowledge graphs with LLM-based reasoning
 
+Support multiple query strategies for different use cases
 
-**YouTube video: [Link](https://youtu.be/3NP1llvtrbI?si=t8Gtu74_Mf0p6EFV)**
+🏗️ System Overview
 
-## Main underlying techniques used in this chatbot:
-- Knowledge graph construction
-- LLM chains and agents
-- Cypher query
+User Question (Natural Language)
+↓
+Strategy Selection (Simple / Improved / RAG)
+↓
+Graph Agent & Retrieval Logic
+↓
+Neo4j Knowledge Graph (Cypher Queries)
+↓
+LLM Response Generation (GPT-3.5)
+↓
+Natural Language Answer
 
-## Requirements:
-- Operating System: Linux OS or Windows. (I am running the project on Linux WSL for windows)
-- OpenAI or Azure OpenAI Credentials: Required for GPT functionality.
+✨ Features
 
-## Installation:
-- Ensure you have Python installed along with required dependencies.
-```
+Natural language Q&A over CSV and XLSX files
+
+Automatic knowledge graph construction
+
+Neo4j graph database with Cypher querying
+
+Graph-based and vector-based RAG support
+
+Multiple interaction strategies
+
+Web-based chatbot interface built with Gradio
+
+🧠 Interaction Modes
+1️⃣ Simple Graph Agent
+
+Direct natural language → Cypher translation
+
+Fast and lightweight querying
+
+Best suited for well-structured questions
+
+2️⃣ Improved Graph Agent
+
+Enhanced query understanding
+
+Better error handling and reasoning
+
+More reliable answer generation
+
+3️⃣ RAG Mode
+
+Uses vector embeddings for semantic similarity
+
+Handles ambiguous or loosely phrased queries
+
+Combines retrieval with graph traversal
+
+🗂️ Knowledge Graph Backend
+
+Database: Neo4j
+
+Data Model: Nodes and relationships
+
+Query Language: Cypher
+
+Example Domain: Movie dataset (actors, movies, genres)
+
+Example Cypher Query
+
+MATCH (a:Actor)-[:ACTED_IN]->(m:Movie)
+WHERE a.name = "Tom Hanks"
+RETURN m.title
+
+🧰 Tech Stack
+
+Frontend: Gradio
+
+Backend: Python, LangChain
+
+Database: Neo4j
+
+LLM: OpenAI GPT-3.5
+
+Embeddings: OpenAI Embeddings
+
+Query Language: Cypher
+
+⚠️ Security & Design Notes
+
+Use READ-ONLY Neo4j credentials
+
+Avoid WRITE permissions to prevent data manipulation
+
+LLM outputs are non-deterministic; graph construction may vary slightly between runs
+
+Knowledge graphs can be built manually or via LLM-based graph transformers
+
+📦 Requirements
+
+Linux or Windows (tested on WSL)
+
+Python 3.9+
+
+OpenAI or Azure OpenAI API credentials
+
+Neo4j v5.17.0 or higher
+
+🔧 Installation
 sudo apt update && sudo apt upgrade
-python3 -m venv tabular-kg-env
-git clone <the repository>
-cd TabularData-KnowledgeGraph-Q&A-With-GPT
-source ...Path to the environment/tabular-kg-env/bin/activate
+python3 -m venv graphrag-env
+git clone <repository-url>
+cd GraphRAG-Nexus
+source graphrag-env/bin/activate
 pip install -r requirements.txt
-```
 
-## Execution:
-1. Create and start a graphDB in Neo4j remotely or using the desktop app. (I used desktop app)
-2. Upgrade your graph to be at least `Version 5.17.0`.
-3. Install `APOC` and `Graph Data Science Library` plugins.
-4. Modify the neo4j.conf:
-  - Comment out `server.directories.import=import` ==> (`# server.directories.import=import`)
-  - Uncomment `# dbms.security.auth_enabled=true` ==> (`dbms.security.auth_enabled=true`)
-  - make sure this line is set as: `dbms.security.allow_csv_import_from_file_urls=true`
-  - make sure this line is set as: `dbms.security.procedures.unrestricted=jwt.security.*,apoc.*,genai.*`
-  - make sure this line is set as: `dbms.security.procedures.allowlist=apoc.*,gds.*,genai.*`
-  - copy `neo4j-genai-plugin-5.17.0.jar` from `products` folder and paste it into `plugins`.
+▶️ Running the Project
 
-4. Load your data, prepare the knowledge graph and inject the data into the Graph database. These steps are performed in `explore/Movie_sample_csv_data`, `1_load_and_save_movide_data.ipynb` and `2_AzureOpenAI_GraphDB_RAG_data_preparation.ipynb`.
-5. Test your Graph database using direct cypher queries. Check `explore/3_query_movieDB_with_cypher.ipynb`
-6. Run the app:
-```
+Create a Neo4j database (Desktop or Remote)
+
+Upgrade Neo4j to v5.17.0+
+
+Install required plugins:
+
+APOC
+
+Graph Data Science Library
+
+Update neo4j.conf to allow CSV imports and procedures
+
+Prepare the knowledge graph using notebooks in:
+
+explore/Movie_sample_csv_data
+
+Test Cypher queries in:
+
+explore/3_query_movieDB_with_cypher.ipynb
+
+Run the application:
+
 python src/app.py
-```
-7. Start chatting!
-
-## Movie Knowledge Graph
-<div align="center">
-  <img src="images/movie_KnowledgeGraph.png" alt="movie_KnowledgeGraph">
-</div>
-
-## Chatbot project Schema
-<div align="center">
-  <img src="images/projectschema.png" alt="Schema">
-</div>
-
-## Chatbot User Interface
-<div align="center">
-  <img src="images/UI.png" alt="ChatBot_UI">
-</div>
-
-## Neo4j function Links:
-- Neo4j Fuzzy search:
-    - apoc.text.fuzzyMatch: https://neo4j.com/labs/apoc/4.3/overview/apoc.text/apoc.text.fuzzyMatch/
-    - Soundex search: https://neo4j.com/developer/kb/how-to-perform-a-soundex-search/
-- Neo4j Vector indexes: https://neo4j.com/docs/cypher-manual/current/indexes/semantic-indexes/vector-indexes/
-
-## Databases:
-- Movie dataset: [Link](https://raw.githubusercontent.com/tomasonjo/blog-datasets/main/movies/movies_small.csv)
-- Medical reports dataset: [Link](https://github.com/neo4j-partners/neo4j-generative-ai-azure/tree/main/ingestion/data)
-
-## Key frameworks/libraries used in this chatbot:
-- Langchain agents: [Website](https://python.langchain.com/v0.1/docs/use_cases/graph/quickstart/)
-- Gradio: [Documentation](https://www.gradio.app/docs/interface)
-- OpenAI: [Developer quickstart](https://platform.openai.com/docs/quickstart?context=python)
-- Neo4j: [Welcome to Neo4j](https://neo4j.com/docs/getting-started/)
