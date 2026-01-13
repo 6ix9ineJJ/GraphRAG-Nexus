@@ -1,15 +1,14 @@
-# GraphRAG-Nexus: Knowledge Graph Q&A and RAG Framework
+# Graph Intelligence System
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://python.org)
 [![Neo4j](https://img.shields.io/badge/Neo4j-5.17%2B-green.svg)](https://neo4j.com)
 [![LangChain](https://img.shields.io/badge/LangChain-Latest-orange.svg)](https://python.langchain.com)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A production-ready **Knowledge Graph + Retrieval-Augmented Generation (RAG)** framework that enables natural language interaction with tabular data through advanced graph database technology.
 
 ## 🚀 Overview
 
-GraphRAG-Nexus transforms traditional tabular data (CSV, Excel) into intelligent knowledge graphs, allowing users to perform sophisticated Q&A and RAG operations using natural language. The system leverages **Neo4j graph databases**, **OpenAI GPT models**, and **Langchain agents** to create a conversational interface for complex data analysis.
+Graph Intelligence System transforms traditional tabular data (CSV, Excel) into intelligent knowledge graphs, allowing users to perform sophisticated Q&A and RAG operations using natural language. The system leverages **Neo4j graph databases**, **OpenAI GPT models**, and **Langchain agents** to create a conversational interface for complex data analysis.
 
 ## ✨ Key Features
 
@@ -28,15 +27,13 @@ User Query → Strategy Selection → Graph Database → AI Processing → Natur
   Gradio UI    LangChain Agent      Neo4j Graph    OpenAI GPT     Answer Output
 ```
 
-**Key NOTE:** Remember to NOT use a Neo4j with WRITE privileges. Use only READ and limit the scope. Otherwise your user can manupulate the data (e.g ask your chain to delete data). So, make sure that your database connection permissions are always scoped as narrowly as possible for your chain/agent’s needs (This warning applies to both designing the chatbot and constructing the knowledge graph using LLMs).
+**Key NOTE:** Remember to NOT use a Neo4j with WRITE privileges. Use only READ and limit scope. Otherwise your user can manipulate data (e.g ask your chain to delete data). So, make sure that your database connection permissions are always scoped as narrowly as possible for your chain/agent's needs (This warning applies to both designing chatbot and constructing knowledge graph using LLMs).
 
-**Key NOTE:** Knowledge graphs, which form the backbone of the chatbot's data structure, can be built with input from domain experts or through advanced language models like the Langchain 'LLM Graph Transformer'. 
+**Key NOTE:** Knowledge graphs, which form the backbone of chatbot's data structure, can be built with input from domain experts or through advanced language models like Langchain 'LLM Graph Transformer'.
 
-**Key NOTE:** Familiarity with database query languages such as Pandas for Python, SQL, and Cypher can enhance the user's ability to ask more better questions and have a richer interaction with the graph agent.
+**Key NOTE:** Familiarity with database query languages such as Pandas for Python, SQL, and Cypher can enhance user's ability to ask better questions and have a richer interaction with graph agent.
 
-**Key NOTE:** Keep that in mind tha LLMs are non-diterministic. Therefore, if you use LLMs for constructing the knowledge graph, you might get slightly different results on each execution.
-
-
+**Key NOTE:** Keep that in mind that LLMs are non-deterministic. Therefore, if you use LLMs for constructing knowledge graph, you might get slightly different results on each execution.
 
 ## Main underlying techniques used in this chatbot:
 - Knowledge graph construction
@@ -44,7 +41,7 @@ User Query → Strategy Selection → Graph Database → AI Processing → Natur
 - Cypher query
 
 ## Requirements:
-- Operating System: Linux OS or Windows. (I am running the project on Linux WSL for windows)
+- Operating System: Linux OS or Windows. (I am running project on Linux WSL for windows)
 - OpenAI or Azure OpenAI Credentials: Required for GPT functionality.
 
 ## Installation:
@@ -52,9 +49,9 @@ User Query → Strategy Selection → Graph Database → AI Processing → Natur
 ```
 sudo apt update && sudo apt upgrade
 python3 -m venv tabular-kg-env
-git clone <the repository>
-cd TabularData-KnowledgeGraph-Q&A-With-GPT
-source ...Path to the environment/tabular-kg-env/bin/activate
+git clone https://github.com/6ix9ineJJ/Graph-Intelligence-System.git
+cd Graph-Intelligence-System
+source ...Path to environment/tabular-kg-env/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -62,7 +59,7 @@ pip install -r requirements.txt
 1. Create and start a graphDB in Neo4j remotely or using the desktop app. (I used desktop app)
 2. Upgrade your graph to be at least `Version 5.17.0`.
 3. Install `APOC` and `Graph Data Science Library` plugins.
-4. Modify the neo4j.conf:
+4. Modify neo4j.conf:
   - Comment out `server.directories.import=import` ==> (`# server.directories.import=import`)
   - Uncomment `# dbms.security.auth_enabled=true` ==> (`dbms.security.auth_enabled=true`)
   - make sure this line is set as: `dbms.security.allow_csv_import_from_file_urls=true`
@@ -70,13 +67,14 @@ pip install -r requirements.txt
   - make sure this line is set as: `dbms.security.procedures.allowlist=apoc.*,gds.*,genai.*`
   - copy `neo4j-genai-plugin-5.17.0.jar` from `products` folder and paste it into `plugins`.
 
-4. Load your data, prepare the knowledge graph and inject the data into the Graph database. These steps are performed in `explore/Movie_sample_csv_data`, `1_load_and_save_movide_data.ipynb` and `2_AzureOpenAI_GraphDB_RAG_data_preparation.ipynb`.
-5. Test your Graph database using direct cypher queries. Check `explore/3_query_movieDB_with_cypher.ipynb`
-6. Run the app:
+5. Load your data, prepare knowledge graph and inject data into the Graph database. These steps are performed in `explore/Movie_sample_csv_data`, `1_load_and_save_movie_data.ipynb` and `2_AzureOpenAI_GraphDB_RAG_data_preparation.ipynb`.
+6. Test your Graph database using direct cypher queries. Check `explore/3_query_movieDB_with_cypher.ipynb`
+7. Run the app:
 ```
 python src/app.py
 ```
-7. Start chatting!
+
+8. Start chatting!
 
 ## 🛠️ Technology Stack
 
@@ -100,8 +98,8 @@ python src/app.py
 
 ```bash
 # Clone the repository
-git clone https://github.com/6ix9ineJJ/GraphRAG-Nexus.git
-cd GraphRAG-Nexus
+git clone https://github.com/6ix9ineJJ/Graph-Intelligence-System.git
+cd Graph-Intelligence-System
 
 # Create virtual environment
 python -m venv venv
@@ -146,7 +144,7 @@ pip install -r requirements.txt
 ### Data Preparation
 
 ```bash
-# Run the knowledge graph construction notebooks
+# Run knowledge graph construction notebooks
 # 1. Load and prepare data
 jupyter explore/Movie_RAG_GraphDB/1_load_and_save_movie_data.ipynb
 
@@ -170,19 +168,19 @@ The application will be available at `http://localhost:7860`
 ### Sample Questions
 
 **Q&A Mode:**
-- "What was the cast of the movie Jumanji?"
+- "What was the cast of movie Jumanji?"
 - "Which movies did Tom Hanks act in?"
-- "What are the most common genres for movies released in 1995?"
+- "What are most common genres for movies released in 1995?"
 
 **RAG Mode:**
 - "What movies are about love and adventure?"
 - "Find movies similar to The Matrix"
-- "Show me action movies from the 1990s"
+- "Show me action movies from 1990s"
 
 ## 📊 Project Structure
 
 ```
-GraphRAG-Nexus/
+Graph-Intelligence-System/
 ├── src/
 │   ├── app.py                    # Main application entry point
 │   └── utils/
@@ -249,15 +247,11 @@ neo4j_config:
 
 ## 🤝 Contributing
 
-1. Fork the repository
+1. Fork repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Additional Resources
 
@@ -278,17 +272,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Neo4j** for the powerful graph database
+- **Neo4j** for powerful graph database
 - **OpenAI** for advanced language models
 - **LangChain** for agent orchestration
-- **Gradio** for the intuitive web interface
+- **Gradio** for intuitive web interface
 
 ## 📞 Support
 
 For questions and support:
-- 📧 Create an [Issue](https://github.com/6ix9ineJJ/GraphRAG-Nexus/issues)
-- 📖 Check the [Wiki](https://github.com/6ix9ineJJ/GraphRAG-Nexus/wiki)
-- 💬 Join the [Discussions](https://github.com/6ix9ineJJ/GraphRAG-Nexus/discussions)
+- 🧪 Create an [Issue](https://github.com/6ix9ineJJ/Graph-Intelligence-System/issues)
+- 📖 Check the [Wiki](https://github.com/6ix9ineJJ/Graph-Intelligence-System/wiki)
+- 💬 Join [Discussions](https://github.com/6ix9ineJJ/Graph-Intelligence-System/discussions)
 
 ---
 
